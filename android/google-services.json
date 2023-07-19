@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "803179839740",
+    "firebase_url": "https://mybudgetdiary-d4972-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mybudgetdiary-d4972",
+    "storage_bucket": "mybudgetdiary-d4972.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803179839740:android:8d85cacea3988104d11779",
+        "android_client_info": {
+          "package_name": "com.example.mybudgetdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803179839740-89j698qkae4i1o49hl7nsjjk07bfftv4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mybudgetdiary",
+            "certificate_hash": "79248aa8503643f46c82b3c96f333620bded24ee"
+          }
+        },
+        {
+          "client_id": "803179839740-n5crrumbjrhn6t1r205f7cgpsegt1epg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzD1dPYKxVWKXgWgJF1ip8YRO7y0lfCMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803179839740-1vnd2ifethqheh0stn6p8o8mu8blv378.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "803179839740-ebcbgba5dfhle96ojln2cq3snteiua6f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mybudgetdiary"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
