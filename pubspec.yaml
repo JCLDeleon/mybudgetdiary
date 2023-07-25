@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.8.1
   shared_preferences: ^2.2.0
   google_fonts: ^5.1.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

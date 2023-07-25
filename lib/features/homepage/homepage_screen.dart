@@ -18,12 +18,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
   @override
   void initState() {
     super.initState();
 
     HomepageService.uploadUserDetailsOnFirstLogin();
     HomepageService.getUserDetails();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -40,46 +48,61 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         titleSpacing: 10,
-        backgroundColor: Colors.deepPurpleAccent,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: SizedBox(
-                height: 35,
-                child: ClipOval(
-                  child: Material(
-                    color: CustomColors.firebaseGrey.withOpacity(0.3),
-                    child: UserPreference.getPhotoUrl() != ''
-                        ? Image.network(
-                            UserPreference.getPhotoUrl(),
-                            fit: BoxFit.fitHeight,
-                          )
-                        : Icon(
-                            Icons.person,
-                            size: 60,
-                            color: CustomColors.firebaseGrey,
-                          ),
-                  ),
-                )),
+            child: InkWell(
+              onTap: () async {
+                LoginService.signOut(context: context);
+              },
+              child: SizedBox(
+                  height: 35,
+                  child: ClipOval(
+                    child: Material(
+                      color: CustomColors.firebaseGrey.withOpacity(0.3),
+                      child: UserPreference.getPhotoUrl() != ''
+                          ? Image.network(
+                              UserPreference.getPhotoUrl(),
+                              fit: BoxFit.fitHeight,
+                            )
+                          : Icon(
+                              Icons.person,
+                              size: 60,
+                              color: CustomColors.firebaseGrey,
+                            ),
+                    ),
+                  )),
+            ),
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await LoginService.signOut(context: context);
-        },
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.wallet),
+            label: 'Savings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.savings),
+            label: 'Budget',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-      ]),
       body: const SafeArea(
         child: Padding(
           padding: EdgeInsets.all(8.0),

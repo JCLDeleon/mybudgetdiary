@@ -1,70 +1,54 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mybudgetdiary/common/sharedpreference.dart';
+import 'package:mybudgetdiary/features/homepage/models/savings.dart';
 
 class HomepageService {
-  static var totalbalance;
+  static CollectionReference getUserCollection() {
+    return FirebaseFirestore.instance.collection('Users');
+  }
+
+  static CollectionReference getUserSavingsCollection() {
+    return getUserRef().collection('Savings');
+  }
+
+  static DocumentReference getUserRef() {
+    return getUserCollection().doc(UserPreference.getUID());
+  }
 
   static Future<void> uploadUserDetailsOnFirstLogin() async {
-    await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(UserPreference.getUID())
-        .set({
-      'UID': UserPreference.getUID(),
-      'Email': UserPreference.getEmail(),
-      'Name': UserPreference.getName(),
-      'FirstName': UserPreference.getFirstName(),
-      'LastName': UserPreference.getLastName(),
-      'PhotoURL': UserPreference.getPhotoUrl(),
-    });
+    DocumentReference userRef = getUserRef();
+
+    userRef.get().then(
+      (docSnapshot) {
+        if (!docSnapshot.exists) {
+          userRef.set({
+            'UID': UserPreference.getUID(),
+            'Email': UserPreference.getEmail(),
+            'Name': UserPreference.getName(),
+            'FirstName': UserPreference.getFirstName(),
+            'LastName': UserPreference.getLastName(),
+            'PhotoURL': UserPreference.getPhotoUrl(),
+          });
+        }
+      },
+    );
   }
 
   static Future<void> getUserDetails() async {
-    CollectionReference userCollection =
-        FirebaseFirestore.instance.collection("Users");
+    DocumentReference userDocs = getUserRef();
 
-    var userDocs = userCollection.doc(UserPreference.getUID());
-
-    userDocs.get().then(
-      (doc) {
-        final data = doc.data() as Map<String, dynamic>;
-
-        print(data["Email"]);
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
-
-    CollectionReference userSavings = await userDocs.collection("Savings");
-
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await userSavings.get();
-    totalbalance = 0;
-    // Get data from docs and convert map to List
-    querySnapshot.docs.map(
-      (doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        print(data["Savings Name"]);
-        print(data["Balance"]);
-
-        totalbalance += data["Balance"];
-      },
-    ).toList();
-
-    print("Total Balance: $totalbalance");
   }
 
-  static Future<Map<String, dynamic>?> getUserSavings() async {
-    var userDoc = FirebaseFirestore.instance
-        .collection("Users")
-        .doc(UserPreference.getUID());
+  static Future<List<Savings>> getUserSavings() async {
+    num totalBalance = 0;
+    final QuerySnapshot<Object?> userSavingsQuery = await getUserSavingsCollection().get();
+    final savings = userSavingsQuery.docs.map((saving) => Savings.fromMap(saving)).toList();
 
-    userDoc.get().then((value) => (savings) {
-          final data = savings.data() as Map<String, dynamic>;
-          print(data["Savings Name"]);
-          print(data["Balance"]);
+    for (Savings saving in savings) {
+      totalBalance += saving.balance;
+    }
 
-          return data;
-        });
-
-    return null;
+    savings.insert(0, Savings(balance: totalBalance, savingsName: "Total Balance"));
+    return savings;
   }
 }

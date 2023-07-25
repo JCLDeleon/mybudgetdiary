@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mybudgetdiary/common/sharedpreference.dart';
 
 class Utils {
@@ -17,5 +18,10 @@ class Utils {
     }
 
     return "$greeting, $name!";
+  }
+
+  static String returnPHCurrency(dynamic num) {
+    final NumberFormat phCurrency = NumberFormat('#,##0.00', 'en_PH');
+    return phCurrency.format(num);
   }
 }
