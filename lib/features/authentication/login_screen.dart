@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mybudgetdiary/features/authentication/widgets/google_sign_in_button.dart';
+import 'package:mybudgetdiary/features/authentication/widgets/login_widget_google_sign_in_button.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

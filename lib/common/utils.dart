@@ -1,10 +1,7 @@
 import 'package:intl/intl.dart';
-import 'package:mybudgetdiary/common/sharedpreference.dart';
 
 class Utils {
   static String returnGreetings() {
-    String name = UserPreference.getFirstName();
-
     DateTime now = DateTime.now();
     String greeting = "";
     int hours = now.hour;
@@ -17,10 +14,10 @@ class Utils {
       greeting = "Good Evening";
     }
 
-    return "$greeting, $name!";
+    return greeting;
   }
 
-  static String returnPHCurrency(dynamic num) {
+  static String returnCurrency(dynamic num) {
     final NumberFormat phCurrency = NumberFormat('#,##0.00', 'en_PH');
     return phCurrency.format(num);
   }
